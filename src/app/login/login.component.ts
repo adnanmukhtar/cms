@@ -19,15 +19,27 @@ export class LoginComponent implements OnInit {
     const userData = event.target;
     const user = value.user;
     const password = value.password;
-    this.Auth.getUserDetail(user, password).subscribe(data => {
-      if(data.token){
-        console.log(`Login data`, data.token);
-      }else{
-        console.log(`Login data`, data.error);
+    try {
+    this.Auth.getUserDetail(user, password).subscribe((data: ResponseData) => {
+      if (data.status) {
+        console.log(`Login data`, data.msg);
+      } else {
+        console.log(`Login data`, data.msg);
       }
-    });
+    }, error => {
+      console.log(`Login data`, error.error);
+    }
+    );
+  } catch (error) {
+    console.log('===', error.error);
+  }
 
     return false;
   }
 
+}
+
+export interface ResponseData {
+  status: boolean;
+  msg: string;
 }
